@@ -8,6 +8,7 @@ using UnityEngine;
 public class Base : Building
 {
     [SerializeField] private ResourceCounter[] _resourceCounters;
+    [SerializeField] private ResourceCollectionArea _resourceCollectionArea;
 
     public event Action<Resource> ResourceDelivered;
 
@@ -23,17 +24,17 @@ public class Base : Building
     private void OnEnable()
     {
         _resouceScaner.ResourcesFound += OnSendCollectors;
+        _resourceCollectionArea.ResourceDelivered += OnResourceDelivered;
     }
 
     private void OnDisable()
     {
         _resouceScaner.ResourcesFound -= OnSendCollectors;
+        _resourceCollectionArea.ResourceDelivered -= OnResourceDelivered;
     }
 
     private void OnSendCollectors(List<ResourcePlace> foundResources)
     {
-        Debug.Log($"Data foundResources send {foundResources.Count}"); // delete
-
         if (foundResources.Count == 0)
             return;
 
@@ -41,16 +42,27 @@ public class Base : Building
         List<ResourcePlace> resourcesPlasces = GetNearestResources(foundResources);
         int currentIndexResource = 0;
 
-        while (collectors.Count > 0)
+        while (collectors.Count > 0 && resourcesPlasces.Count > 0)
         {
             Collector collector = collectors.Dequeue();
-            Transform waypoint = resourcesPlasces[currentIndexResource].transform;
+            ResourcePlace resourcePlace = resourcesPlasces[currentIndexResource];
+            Transform directionPoint = resourcePlace.transform;
+            Queue<Waypoint> waypoints = SpecifyWaypoints(directionPoint);
 
-            Queue<Transform> waypoints = SpecifyWaypoints(waypoint);
             collector.SetWaypoints(waypoints);
+            collector.SetResourcePlace(resourcePlace);
 
             currentIndexResource = ++currentIndexResource % resourcesPlasces.Count;
         }
+    }
+
+    private void OnResourceDelivered(Collector collector, Resource resource)
+    {
+        Debug.Log($"OnResourceDelivered on Base {resource}"); // delete
+
+        SendCollector(collector);
+
+        ResourceDelivered?.Invoke(resource);
     }
 
     private List<ResourcePlace> GetNearestResources(List<ResourcePlace> foundResources)
@@ -59,30 +71,66 @@ public class Base : Building
 
         foreach (var resourceCounter in _resourceCounters)
         {
-            if (resourceCounter.IsFull == false)
+            if (resourceCounter.IsFull == false && foundResources.Count > 0)
             {
-                foreach (var resource in foundResources)
-                {
-                    Debug.Log($"FoundResources: {resource}"); // delete
-                    Debug.Log($"CheckResourceSuitable: {resourceCounter.IsResourceSuitable(resource)}"); // delete
+                List<ResourcePlace> placesSameType = foundResources
+                    .Where(rp => resourceCounter.IsResourceSuitable(rp))
+                    .ToList();
 
-                    if (resourceCounter.IsResourceSuitable(resource))
-                        resources.Add(resource);
-                }
+                if (placesSameType.Count == 0) 
+                    break;
+
+                float distance = placesSameType.Min(r => Vector3.Distance(r.transform.position, transform.position));
+
+                ResourcePlace resource = placesSameType
+                    .Where(r => distance == Vector3.Distance(r.transform.position, transform.position))
+                    .First();
+
+                if (resource != null)
+                    resources.Add(resource);
             }
         }
-
-        Debug.Log($"NearestResources: {resources.Count}"); // delete
 
         return resources;
     }
 
-    private Queue<Transform> SpecifyWaypoints(Transform point)
+    private void SendCollector(Collector collector)
     {
-        Queue<Transform> waypoints = new Queue<Transform>();
+        ResourceCounter suitableResourceCounter = _resourceCounters
+            .Where(rc => rc.IsResourceSuitable(collector.ResourcePlace))
+            .FirstOrDefault(rc => rc = null);
 
-        waypoints.Enqueue(point);
-        waypoints.Enqueue(transform);
+        //foreach (var resourceCounter in _resourceCounters)
+        //{
+        //    Debug.Log($"IsResourceSuitable - {resourceCounter.IsResourceSuitable(collector.ResourcePlace)}");
+
+        //    if (resourceCounter.IsResourceSuitable(collector.ResourcePlace)) 
+        //    {
+        //        suitableResourceCounter = resourceCounter;
+
+        //        break;
+        //    }
+        //}
+
+        Debug.Log($"ResourceCounter - {suitableResourceCounter}");
+
+        if (suitableResourceCounter == null)
+            return;
+
+        if (suitableResourceCounter.IsFull == false && collector.IsResourcePlacedepleted() == false)
+        {
+            Queue<Waypoint> waypoints = SpecifyWaypoints(collector.ResourcePlace.transform);
+            collector.SetWaypoints(waypoints);
+        }
+    }
+
+    private Queue<Waypoint> SpecifyWaypoints(Transform point)
+    {
+        Queue<Waypoint> waypoints = new Queue<Waypoint>();
+        float radiusReachingBase = 20.0f;
+
+        waypoints.Enqueue(new Waypoint(point));
+        waypoints.Enqueue(new Waypoint(transform, radiusReachingBase));
 
         return waypoints;
     }

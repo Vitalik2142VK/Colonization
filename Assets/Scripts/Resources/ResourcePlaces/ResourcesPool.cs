@@ -7,6 +7,8 @@ public class ResourcesPool : MonoBehaviour
 
     private PoolObjcts<Resource> _pool;
 
+    public Resource ExamplePrefab => _prefab;
+
     private void Awake()
     {
         _pool = new PoolObjcts<Resource>(_container, _prefab);
@@ -14,11 +16,15 @@ public class ResourcesPool : MonoBehaviour
 
     public Resource GetResource()
     {
-        return _pool.GetGameObject();
+        Resource resource = _pool.GetGameObject();
+        resource.Delivered += PutResource;
+
+        return resource;
     }
 
-    public void Put(Resource resource)
+    public void PutResource(Resource resource)
     {
         _pool.PutGameObject(resource);
+        resource.Delivered -= PutResource;
     }
 }

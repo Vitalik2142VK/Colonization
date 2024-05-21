@@ -3,24 +3,36 @@ using UnityEngine;
 
 public abstract class ResourcePlace : MonoBehaviour, IResourcePlace
 {
+    private const float MaxRandomPosition = 0.5f;
+    private const float MinRandomPosition = -0.5f;
+
     private const float WaitRemove = 5.0f;
     private const int MaxCountRecources = 10;
     private const int MinCountRecources = 3;
 
-    [SerializeField] private ResourcesPool _pool;
-
+    private ResourcesPool _pool;
     private int _countRecources = MinCountRecources;
 
     protected ResourcesPool Pool => _pool;
     protected int CountRecources => _countRecources;
 
+    public void SetResourcesPool(ResourcesPool pool)
+    {
+        if (_pool == null)
+            _pool = pool;
+    }
+
     public void GiveResource()
     {
         Resource resource = _pool.GetResource();
-        Vector3 position = transform.position;
-        float spawnHeight = transform.localScale.y + resource.transform.localScale.y + position.y;
 
-        resource.transform.position = new Vector3(position.x, spawnHeight + position.z);
+        Vector3 position = transform.position;
+        float spawnHeight = resource.transform.localScale.y + position.y;
+        float positionX = position.x + GetRandomValueByAxis();
+        float positionZ = position.z + GetRandomValueByAxis();
+
+        resource.gameObject.SetActive(true);
+        resource.transform.position = new Vector3(positionX, spawnHeight, positionZ);
 
         if (--_countRecources == 0)
             StartCoroutine(Remove());
@@ -36,5 +48,10 @@ public abstract class ResourcePlace : MonoBehaviour, IResourcePlace
         yield return new WaitForSeconds(WaitRemove);
 
         Destroy(gameObject);
+    }
+
+    private float GetRandomValueByAxis()
+    {
+        return Random.Range(MinRandomPosition, MaxRandomPosition);
     }
 }

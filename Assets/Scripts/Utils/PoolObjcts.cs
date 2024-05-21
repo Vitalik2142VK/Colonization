@@ -30,6 +30,7 @@ public class PoolObjcts<T> where T : MonoBehaviour
 
     public void PutGameObject(T obj)
     {
+        obj.transform.parent = _conteiner;
         obj.gameObject.SetActive(false);
         _pool.Push(obj);
     }

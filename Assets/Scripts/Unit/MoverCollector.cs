@@ -6,46 +6,58 @@ public class MoverCollector : MoverUnit
     public event Action<Resource> CanTakeResource;
 
     private Resource _foundResource;
-    private bool _isResourceFinded = false;
+    private bool _isResourceFound = false;
     private bool _isResourceTaked = false;
+
+    public bool IsResourceFound => _isResourceFound;
 
     public void SetFoundResource(Resource resource)
     {
         _foundResource = resource;
-        _isResourceFinded = true;
+        _isResourceFound = true;
     }
 
     public override void Move()
     {
-        //if (_isResourceFinded && _isResourceTaked == false)
-        //    MoveToResource();
-        //else
-        //    MoveToPoint();
+        if (_isResourceFound && _isResourceTaked == false)
+            MoveToResource();
+        else
+        {
+            MoveToPoint();
 
-        MoveToPoint();
+            if (IsThereWaypoint == false)
+                PutResource();
+        }
     }
 
-    public void PutResource()
+    private void PutResource()
     {
-        _isResourceFinded = false;
+        _isResourceFound = false;
         _isResourceTaked = false;
     }
 
     private void MoveToResource()
     {
-        Vector3 resourcePosition = _foundResource.transform.position;
-        float radiusReachingPoint = RadiusReachingPoint + _foundResource.transform.localScale.x;
+        if (_foundResource.GetComponent<Rigidbody>().isKinematic == false)
+        {
+            Vector3 resourcePosition = _foundResource.transform.position;
+            float radiusReachingPoint = RadiusReachingPoint + _foundResource.transform.localScale.x;
 
-        if (Vector3.Distance(resourcePosition, transform.position) <= radiusReachingPoint)
-            transform.position = Vector3.MoveTowards(transform.position, resourcePosition, Speed * Time.deltaTime);
+            if (Vector3.Distance(resourcePosition, transform.position) >= radiusReachingPoint)
+                transform.position = Vector3.MoveTowards(transform.position, resourcePosition, Speed * Time.deltaTime);
+            else
+                TakeResource();
+        }
         else
-            TakeResource();
+            _isResourceFound = false;
     }
 
     private void TakeResource()
     {
-        CanTakeResource?.Invoke(_foundResource);
-
         _isResourceTaked = true;
+
+        EstablishLastPoint();
+
+        CanTakeResource?.Invoke(_foundResource); 
     }
 }

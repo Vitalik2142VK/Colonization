@@ -9,6 +9,7 @@ public class SpawnerResoircesPlaces : MonoBehaviour
 
     [SerializeField] private Transform _container;
     [SerializeField] private ResourcePlace[] _prefabs;
+    [SerializeField] private ResourcesPool[] _pools;
     [SerializeField] private float _maxValueByX;
     [SerializeField] private float _minValueByX;
     [SerializeField] private float _maxValueByZ;
@@ -21,16 +22,39 @@ public class SpawnerResoircesPlaces : MonoBehaviour
         if (_isRandomCount)
             _countRecources = Random.Range(MinCountResources, MaxCountResources);
 
+        ResourcesPool pool;
+
         foreach (var prefab in _prefabs)
         {
+            pool = GetSuitablePool(prefab);
+
             for (int i = 0; i < _countRecources; i++)
             {
-                Spawn(prefab);
+                Spawn(prefab, pool);
             }
         } 
     }
 
-    private Vector3 GetRandomPosition() 
+    private ResourcesPool GetSuitablePool(ResourcePlace prefab)
+    {
+        foreach (var pool in _pools)
+        {
+            if (pool.ExamplePrefab.IsItSameType(prefab))
+                return pool;
+        }
+
+        throw new System.Exception("There are no suitable pools.");
+    }
+
+    private void Spawn(ResourcePlace prefab, ResourcesPool pool)
+    {
+        Vector3 position = GetRandomPosition();
+        ResourcePlace resourcePlaces = Instantiate(prefab, position, Quaternion.identity);
+        resourcePlaces.transform.parent = _container;
+        resourcePlaces.SetResourcesPool(pool);
+    }
+
+    private Vector3 GetRandomPosition()
     {
         Vector3 spawnPosition = new Vector3();
         bool isUniquePosiotion = false;
@@ -63,12 +87,5 @@ public class SpawnerResoircesPlaces : MonoBehaviour
 
         spawnPosition = new Vector3();
         return false;
-    }
-
-    private void Spawn(ResourcePlace prefab)
-    {
-        Vector3 position = GetRandomPosition();
-        ResourcePlace resourcePlaces = Instantiate(prefab, position, Quaternion.identity);
-        resourcePlaces.transform.parent = _container;
     }
 }

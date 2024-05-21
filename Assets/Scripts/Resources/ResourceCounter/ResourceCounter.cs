@@ -7,9 +7,9 @@ public abstract class ResourceCounter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _counterOutput;
 
     private int _countResources = 0;
-    private int _maxCount = 10;
+    private int _maxCount = 5;
 
-    public bool IsFull => _countResources == _maxCount;
+    public bool IsFull => _countResources >= _maxCount;
 
     private void OnEnable()
     {
@@ -28,9 +28,13 @@ public abstract class ResourceCounter : MonoBehaviour
 
     private void OnAddResource(Resource resource)
     {
+        Debug.Log($"Check resource in ResourceCounter {IsResourceSuitable(resource)}"); // delete
+
         if (IsResourceSuitable(resource))
         {
             _countResources++;
+
+            resource.Remove();
 
             UpdateView();
         }

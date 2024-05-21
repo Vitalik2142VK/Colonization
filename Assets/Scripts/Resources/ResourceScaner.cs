@@ -38,8 +38,6 @@ public class ResourceScaner : MonoBehaviour
 
             Collider[] scanObjects = Physics.OverlapSphere(transform.position, _scanRadius);
 
-            Debug.Log($"{scanObjects.Length}"); // delete
-
             if (scanObjects.Length != 0)
             {
                 foreach (var collider in scanObjects)

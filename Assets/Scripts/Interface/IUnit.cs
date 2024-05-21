@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface IUnit 
 {
-    public void SetWaypoints(Queue<Transform> waypints);
+    public void SetWaypoints(Queue<Waypoint> waypints);
 }
