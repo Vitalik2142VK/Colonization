@@ -1,1 +1,1 @@
-public interface IBuilding {}
+public interface IBuilding { }

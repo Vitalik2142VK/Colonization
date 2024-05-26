@@ -30,7 +30,7 @@ public class MoverCollector : MoverUnit
         }
     }
 
-    private void PutResource()
+    public void PutResource()
     {
         _isResourceFound = false;
         _isResourceTaked = false;

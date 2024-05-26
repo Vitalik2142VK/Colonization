@@ -4,7 +4,6 @@ public class PlayerMover : MonoBehaviour
 {
     private const float MinValueKeyOperation = 0.1f;
 
-    [SerializeField] private LevelBorders _levelBorders;
     [SerializeField, Min(1.0f)] private float _moveSpeed;
     [SerializeField, Min(1.0f)] private float _bostCoefficient;
 

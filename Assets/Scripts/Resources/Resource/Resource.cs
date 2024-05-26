@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public abstract class Resource : MonoBehaviour, IResource 
 {
-    public event Action<Resource> Delivered;
+    public event Action<Resource> Delete;
 
     private Rigidbody _rigidbody;
 
@@ -25,7 +25,7 @@ public abstract class Resource : MonoBehaviour, IResource
     {
         _rigidbody.isKinematic = false;
 
-        Delivered?.Invoke(this);
+        Delete?.Invoke(this);
     }
 
     public abstract bool IsItSameType(IResource resource);

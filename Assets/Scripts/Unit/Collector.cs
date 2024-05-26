@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class Collector : Unit
 {
     private MoverCollector _moverCollector;
@@ -44,7 +42,12 @@ public class Collector : Unit
 
     public bool IsResourcePlacedepleted()
     {
-        return _resourcePlace == null || _resourcePlace.enabled == true;
+        return _resourcePlace == null || _resourcePlace.enabled == false;
+    }
+
+    public void PutResource()
+    {
+        _moverCollector.PutResource();
     }
 
     private void OnFindResource(Resource resource)

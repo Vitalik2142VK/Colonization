@@ -17,7 +17,7 @@ public class ResourcesPool : MonoBehaviour
     public Resource GetResource()
     {
         Resource resource = _pool.GetGameObject();
-        resource.Delivered += PutResource;
+        resource.Delete += PutResource;
 
         return resource;
     }
@@ -25,6 +25,6 @@ public class ResourcesPool : MonoBehaviour
     public void PutResource(Resource resource)
     {
         _pool.PutGameObject(resource);
-        resource.Delivered -= PutResource;
+        resource.Delete -= PutResource;
     }
 }

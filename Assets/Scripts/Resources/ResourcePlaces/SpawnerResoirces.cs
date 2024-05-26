@@ -4,7 +4,7 @@ public class SpawnerResoircesPlaces : MonoBehaviour
 {
     private const string Ground = nameof(Ground);
     private const float MeasuringHeight = 100.0f;
-    private const int MaxCountResources = 5;
+    private const int MaxCountResources = 10;
     private const int MinCountResources = 1;
 
     [SerializeField] private Transform _container;

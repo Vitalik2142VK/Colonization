@@ -58,16 +58,16 @@ public class Base : Building
 
     private void OnResourceDelivered(Collector collector, Resource resource)
     {
-        Debug.Log($"OnResourceDelivered on Base {resource}"); // delete
+        ResourceDelivered?.Invoke(resource);
 
         SendCollector(collector);
-
-        ResourceDelivered?.Invoke(resource);
     }
 
     private List<ResourcePlace> GetNearestResources(List<ResourcePlace> foundResources)
     {
         List<ResourcePlace> resources = new List<ResourcePlace>();
+
+        _resourceCounters = _resourceCounters.OrderBy(rc => rc.CountResources).ToArray();
 
         foreach (var resourceCounter in _resourceCounters)
         {
@@ -78,7 +78,7 @@ public class Base : Building
                     .ToList();
 
                 if (placesSameType.Count == 0) 
-                    break;
+                    continue;
 
                 float distance = placesSameType.Min(r => Vector3.Distance(r.transform.position, transform.position));
 
@@ -96,23 +96,10 @@ public class Base : Building
 
     private void SendCollector(Collector collector)
     {
-        ResourceCounter suitableResourceCounter = _resourceCounters
+        ResourceCounter suitableResourceCounter = 
+            _resourceCounters
             .Where(rc => rc.IsResourceSuitable(collector.ResourcePlace))
-            .FirstOrDefault(rc => rc = null);
-
-        //foreach (var resourceCounter in _resourceCounters)
-        //{
-        //    Debug.Log($"IsResourceSuitable - {resourceCounter.IsResourceSuitable(collector.ResourcePlace)}");
-
-        //    if (resourceCounter.IsResourceSuitable(collector.ResourcePlace)) 
-        //    {
-        //        suitableResourceCounter = resourceCounter;
-
-        //        break;
-        //    }
-        //}
-
-        Debug.Log($"ResourceCounter - {suitableResourceCounter}");
+            .FirstOrDefault();
 
         if (suitableResourceCounter == null)
             return;
@@ -121,6 +108,7 @@ public class Base : Building
         {
             Queue<Waypoint> waypoints = SpecifyWaypoints(collector.ResourcePlace.transform);
             collector.SetWaypoints(waypoints);
+            collector.PutResource();
         }
     }
 

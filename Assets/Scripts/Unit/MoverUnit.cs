@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class MoverUnit : MonoBehaviour
@@ -9,7 +8,7 @@ public abstract class MoverUnit : MonoBehaviour
     [SerializeField, Min(3.0f)] private float _speed;
     [SerializeField, Min(1.0f)] private float _timeWaitPoint;
 
-    private Timer _timer; // don't use right now;
+    private Timer _timerWait;
     private Queue<Waypoint> _waipoints;
     private Waypoint _currentPoint;
     private bool _isThereWaypoint = false;
@@ -59,23 +58,23 @@ public abstract class MoverUnit : MonoBehaviour
 
     private void CreateTimer()
     {
-        if (_timer != null)
+        if (_timerWait != null)
             return;
 
-        _timer = new Timer(_timeWaitPoint);
-        _timer.UpdateWaitingTime();
+        _timerWait = new Timer(_timeWaitPoint);
+        _timerWait.UpdateWaitingTime();
     }
 
     private void WaitNextPoint()
     {
-        if (_timer.IsTimeUp)
+        if (_timerWait.IsTimeUp)
         {
-            _timer.UpdateWaitingTime();
+            _timerWait.UpdateWaitingTime();
 
             AppointNextPoint();
         }
         else
-            _timer.MakeCountdown();
+            _timerWait.MakeCountdown();
     }
 
     public abstract void Move();
