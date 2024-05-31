@@ -42,7 +42,7 @@ public class PoolObjcts<T> where T : MonoBehaviour
             if (_conteiner.GetChild(i).gameObject.TryGetComponent(out T obj)) 
             {
                 Object.Destroy(obj.gameObject);
-            }  
+            }
         }
 
         _pool.Clear();

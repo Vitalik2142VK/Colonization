@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -34,8 +35,6 @@ public abstract class ResourceCounter : MonoBehaviour
             if (_countResources < _maxCount)
                 _countResources++;
 
-            resource.Remove();
-
             UpdateView();
         }
     }
@@ -45,5 +44,7 @@ public abstract class ResourceCounter : MonoBehaviour
         _counterOutput.text = $"{_countResources}/{_maxCount}";
     }
 
-    public abstract bool IsResourceSuitable(IResource resource);
+    public abstract bool IsResourceTypeSuitable(Type typeResource);
+
+    protected abstract bool IsResourceSuitable(IResource resource);
 }

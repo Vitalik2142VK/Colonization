@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class ResourcesPool : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class ResourcesPool : MonoBehaviour
 
     private PoolObjcts<Resource> _pool;
 
-    public Resource ExamplePrefab => _prefab;
+    public Type TypeResource => _prefab.GetType();
 
     private void Awake()
     {

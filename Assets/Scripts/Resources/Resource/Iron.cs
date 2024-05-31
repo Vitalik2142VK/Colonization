@@ -1,7 +1,1 @@
-﻿public class Iron : Resource, IIron
-{
-    public override bool IsItSameType(IResource resource)
-    {
-        return resource is IIron;
-    }
-}
+﻿public class Iron : Resource { }

@@ -1,7 +1,14 @@
-﻿public class GoldCounter : ResourceCounter
+﻿using System;
+
+public class GoldCounter : ResourceCounter
 {
-    public override bool IsResourceSuitable(IResource resource)
+    public override bool IsResourceTypeSuitable(Type typeResource)
     {
-        return resource is IGold;
+        return typeResource == typeof(Gold);
+    }
+
+    protected override bool IsResourceSuitable(IResource resource)
+    {
+        return resource is Gold;
     }
 }

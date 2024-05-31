@@ -3,22 +3,21 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(ResourceScaner))]
-[RequireComponent(typeof(ListBasicUnits))]
+[RequireComponent(typeof(ResourceScaner), typeof(ListBaseUnits))]
 public class Base : Building
 {
     [SerializeField] private ResourceCounter[] _resourceCounters;
     [SerializeField] private ResourceCollectionArea _resourceCollectionArea;
 
-    public event Action<Resource> ResourceDelivered;
-
     private ResourceScaner _resouceScaner;
-    private ListBasicUnits _listUnits;
+    private ListBaseUnits _listUnits;
+
+    public event Action<Resource> ResourceDelivered;
 
     private void Awake()
     {
         _resouceScaner = GetComponent<ResourceScaner>();
-        _listUnits = GetComponent<ListBasicUnits>();
+        _listUnits = GetComponent<ListBaseUnits>();
     }
 
     private void OnEnable()
@@ -59,6 +58,7 @@ public class Base : Building
     private void OnResourceDelivered(Collector collector, Resource resource)
     {
         ResourceDelivered?.Invoke(resource);
+        resource.Remove();
 
         SendCollector(collector);
     }
@@ -74,7 +74,7 @@ public class Base : Building
             if (resourceCounter.IsFull == false && foundResources.Count > 0)
             {
                 List<ResourcePlace> placesSameType = foundResources
-                    .Where(rp => resourceCounter.IsResourceSuitable(rp))
+                    .Where(rp => resourceCounter.IsResourceTypeSuitable(rp.GetTypeResource()))
                     .ToList();
 
                 if (placesSameType.Count == 0) 
@@ -96,9 +96,8 @@ public class Base : Building
 
     private void SendCollector(Collector collector)
     {
-        ResourceCounter suitableResourceCounter = 
-            _resourceCounters
-            .Where(rc => rc.IsResourceSuitable(collector.ResourcePlace))
+        ResourceCounter suitableResourceCounter = _resourceCounters
+            .Where(rc => rc.IsResourceTypeSuitable(collector.ResourcePlace.GetTypeResource()))
             .FirstOrDefault();
 
         if (suitableResourceCounter == null)

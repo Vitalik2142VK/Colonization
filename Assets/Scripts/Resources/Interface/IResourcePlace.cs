@@ -1,4 +1,4 @@
-public interface IResourcePlace : IResource
+public interface IResourcePlace
 {
     public void GiveResource();
 }

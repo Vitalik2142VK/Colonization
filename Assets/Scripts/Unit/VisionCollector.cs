@@ -5,9 +5,9 @@ public class VisionCollector : VisionUnit
 {
     [SerializeField, Min(1.0f)] private float _timeWait;
 
-    public event Action<Resource> ResourceFound;
-
     private Timer _timer;
+
+    public event Action<Resource> ResourceFound;
 
     private void Awake()
     {

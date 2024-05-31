@@ -541,7 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damping: {x: 0.05, y: 0.05, z: 0.05}
+  Damping: {x: 0.02, y: 0.02, z: 0.02}
   ShoulderOffset: {x: 0, y: 40, z: -20}
   VerticalArmLength: 0.4
   CameraSide: 1
@@ -2569,7 +2569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e86a6cfb812579443962a7157f7da9c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 20
+  _moveSpeed: 40
   _bostCoefficient: 5
 --- !u!114 &1921882144
 MonoBehaviour:

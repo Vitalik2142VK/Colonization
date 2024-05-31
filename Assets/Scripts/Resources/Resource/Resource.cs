@@ -4,9 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public abstract class Resource : MonoBehaviour, IResource 
 {
-    public event Action<Resource> Delete;
-
     private Rigidbody _rigidbody;
+
+    public event Action<Resource> Delete;
 
     private void Awake()
     {
@@ -27,6 +27,4 @@ public abstract class Resource : MonoBehaviour, IResource
 
         Delete?.Invoke(this);
     }
-
-    public abstract bool IsItSameType(IResource resource);
 }

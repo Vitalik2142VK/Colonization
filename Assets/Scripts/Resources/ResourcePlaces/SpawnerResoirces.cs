@@ -39,7 +39,7 @@ public class SpawnerResoircesPlaces : MonoBehaviour
     {
         foreach (var pool in _pools)
         {
-            if (pool.ExamplePrefab.IsItSameType(prefab))
+            if (pool.TypeResource == prefab.GetTypeResource())
                 return pool;
         }
 
