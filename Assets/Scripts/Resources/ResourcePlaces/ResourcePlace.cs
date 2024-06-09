@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class ResourcePlace : MonoBehaviour, IResourcePlace
@@ -13,9 +14,6 @@ public abstract class ResourcePlace : MonoBehaviour, IResourcePlace
     private ResourcesPool _pool;
     private int _countRecources = MinCountRecources;
 
-    protected ResourcesPool Pool => _pool;
-    protected int CountRecources => _countRecources;
-
     public void SetResourcesPool(ResourcesPool pool)
     {
         if (_pool == null)
@@ -24,23 +22,26 @@ public abstract class ResourcePlace : MonoBehaviour, IResourcePlace
 
     public void GiveResource()
     {
-        Resource resource = _pool.GetResource();
+        if (_countRecources > 0)
+        {
+            Resource resource = _pool.GetResource();
 
-        Vector3 position = transform.position;
-        float spawnHeight = resource.transform.localScale.y + position.y;
-        float positionX = position.x + GetRandomValueByAxis();
-        float positionZ = position.z + GetRandomValueByAxis();
+            Vector3 position = transform.position;
+            float spawnHeight = resource.transform.localScale.y + position.y;
+            float positionX = position.x + GetRandomValueByAxis();
+            float positionZ = position.z + GetRandomValueByAxis();
 
-        resource.gameObject.SetActive(true);
-        resource.transform.position = new Vector3(positionX, spawnHeight, positionZ);
+            resource.gameObject.SetActive(true);
+            resource.transform.position = new Vector3(positionX, spawnHeight, positionZ);
 
-        if (--_countRecources == 0)
-            StartCoroutine(Remove());
+            if (--_countRecources == 0)
+                StartCoroutine(Remove());
+        }
     }
 
     protected void EstablishCountResources()
     {
-        _countRecources = Random.Range(MinCountRecources, MaxCountRecources);
+        _countRecources = UnityEngine.Random.Range(MinCountRecources, MaxCountRecources);
     }
 
     protected IEnumerator Remove()
@@ -52,6 +53,8 @@ public abstract class ResourcePlace : MonoBehaviour, IResourcePlace
 
     private float GetRandomValueByAxis()
     {
-        return Random.Range(MinRandomPosition, MaxRandomPosition);
+        return UnityEngine.Random.Range(MinRandomPosition, MaxRandomPosition);
     }
+
+    public abstract Type GetTypeResource();
 }

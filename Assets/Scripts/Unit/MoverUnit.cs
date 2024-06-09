@@ -73,8 +73,10 @@ public abstract class MoverUnit : MonoBehaviour
 
             AppointNextPoint();
         }
-        else
+        else 
+        { 
             _timerWait.MakeCountdown();
+        }
     }
 
     public abstract void Move();

@@ -1,7 +1,14 @@
-﻿public class HardСoalCounter : ResourceCounter
+﻿using System;
+
+public class HardСoalCounter : ResourceCounter
 {
-    public override bool IsResourceSuitable(IResource resource)
+    public override bool IsResourceTypeSuitable(Type typeResource)
     {
-        return resource is IHardСoal;
+        return typeResource == typeof(HardСoal);
+    }
+
+    protected override bool IsResourceSuitable(IResource resource)
+    {
+        return resource is HardСoal;
     }
 }

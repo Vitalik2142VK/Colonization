@@ -3,24 +3,21 @@ using UnityEngine;
 
 public class MoverCollector : MoverUnit
 {
-    public event Action<Resource> CanTakeResource;
-
     private Resource _foundResource;
+    private Rigidbody _foundResourceRigidbody;
     private bool _isResourceFound = false;
     private bool _isResourceTaked = false;
 
-    public bool IsResourceFound => _isResourceFound;
+    public event Action<Resource> CanTakeResource;
 
-    public void SetFoundResource(Resource resource)
-    {
-        _foundResource = resource;
-        _isResourceFound = true;
-    }
+    public bool IsResourceFound => _isResourceFound;
 
     public override void Move()
     {
         if (_isResourceFound && _isResourceTaked == false)
+        {
             MoveToResource();
+        }
         else
         {
             MoveToPoint();
@@ -28,6 +25,16 @@ public class MoverCollector : MoverUnit
             if (IsThereWaypoint == false)
                 PutResource();
         }
+    }
+
+    public void SetFoundResource(Resource resource)
+    {
+        if (resource.TryGetComponent(out Rigidbody rigidbody))
+        {
+            _foundResource = resource;
+            _foundResourceRigidbody = rigidbody;
+            _isResourceFound = true;
+        } 
     }
 
     public void PutResource()
@@ -38,10 +45,10 @@ public class MoverCollector : MoverUnit
 
     private void MoveToResource()
     {
-        if (_foundResource.GetComponent<Rigidbody>().isKinematic == false)
+        if (_foundResourceRigidbody.isKinematic == false)
         {
-            Vector3 resourcePosition = _foundResource.transform.position;
-            float radiusReachingPoint = RadiusReachingPoint + _foundResource.transform.localScale.x;
+            Vector3 resourcePosition = _foundResourceRigidbody.transform.position;
+            float radiusReachingPoint = RadiusReachingPoint + _foundResourceRigidbody.transform.localScale.x;
 
             if (Vector3.Distance(resourcePosition, transform.position) >= radiusReachingPoint)
                 transform.position = Vector3.MoveTowards(transform.position, resourcePosition, Speed * Time.deltaTime);
@@ -49,7 +56,9 @@ public class MoverCollector : MoverUnit
                 TakeResource();
         }
         else
+        {
             _isResourceFound = false;
+        }
     }
 
     private void TakeResource()
@@ -58,6 +67,6 @@ public class MoverCollector : MoverUnit
 
         EstablishLastPoint();
 
-        CanTakeResource?.Invoke(_foundResource); 
+        CanTakeResource?.Invoke(_foundResource);
     }
 }

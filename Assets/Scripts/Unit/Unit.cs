@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MoverUnit))]
-[RequireComponent(typeof(VisionUnit))]
+[RequireComponent(typeof(MoverUnit), typeof(VisionUnit))]
 public abstract class Unit : MonoBehaviour, IUnit
 {
     private MoverUnit _moverUnit;

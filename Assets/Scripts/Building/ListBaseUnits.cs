@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class ListBasicUnits : MonoBehaviour
+public class ListBaseUnits : MonoBehaviour
 {
     [SerializeField] private List<Unit> _units;
 
