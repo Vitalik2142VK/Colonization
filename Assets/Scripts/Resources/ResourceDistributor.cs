@@ -6,9 +6,9 @@ public class ResourceDistributor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Collector _))
+        if (other.TryGetComponent(out Collector collector))
         {
-            _resourcePlace.GiveResource();
+            collector.MineResource(_resourcePlace);                
         }
     }
 }

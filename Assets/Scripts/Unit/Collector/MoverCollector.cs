@@ -43,6 +43,11 @@ public class MoverCollector : MoverUnit
         _isResourceTaked = false;
     }
 
+    public void TakeResourcesBase()
+    {
+        _isResourceTaked = true;
+    }
+
     private void MoveToResource()
     {
         if (_foundResourceRigidbody.isKinematic == false)

@@ -17,9 +17,16 @@ public abstract class Unit : MonoBehaviour, IUnit
         _moverUnit.SetWaypoints(waypoints);
     }
 
+    public void StopMove()
+    {
+        _moverUnit.RemoveWaipoints();
+    }
+
     protected void GetComponents()
     {
         _moverUnit = GetComponent<MoverUnit>();
         _visionUnit = GetComponent<VisionUnit>();
     }
+
+    public abstract Dictionary<string, int> GetRequiredResources();
 }

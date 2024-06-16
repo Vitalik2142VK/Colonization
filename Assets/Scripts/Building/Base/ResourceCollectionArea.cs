@@ -5,7 +5,12 @@ public class ResourceCollectionArea : MonoBehaviour
 {
     public event Action<Collector, Resource> ResourceDelivered;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
+    {
+        GetResource(other);
+    }
+
+    private void GetResource(Collider other)
     {
         if (other.gameObject.TryGetComponent(out Collector collector))
         {

@@ -27,6 +27,14 @@ public abstract class MoverUnit : MonoBehaviour
         AppointNextPoint();
     }
 
+    public void RemoveWaipoints()
+    {
+        _isThereWaypoint = false;
+
+        if (_waipoints != null)
+            _waipoints.Clear();
+    }
+
     protected void MoveToPoint()
     {
         if (IsThereWaypoint)
