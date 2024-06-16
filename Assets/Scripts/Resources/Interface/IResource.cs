@@ -1,1 +1,1 @@
-public interface IResource { }
+public interface IResource : IInteractive { }

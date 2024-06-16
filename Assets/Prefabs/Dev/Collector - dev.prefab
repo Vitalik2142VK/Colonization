@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b12af4e12064bb409052ae5b5809dfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
+  _speed: 10
   _timeWaitPoint: 2
 --- !u!114 &6781233889712340920
 MonoBehaviour:
@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f1fdce80993ae44bcbca8dd45a9a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _miningTime: 2
 --- !u!114 &9011266673482363792
 MonoBehaviour:
   m_ObjectHideFlags: 0

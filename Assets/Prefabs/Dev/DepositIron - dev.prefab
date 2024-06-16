@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 6809909560737590047}
   - component: {fileID: 4578856430411925347}
   - component: {fileID: -4995866709238061291}
+  - component: {fileID: -1289800268556582927}
   m_Layer: 0
   m_Name: DepositIron - dev
   m_TagString: Untagged
@@ -186,3 +187,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c48a4939f0c427f49a65f88f4c945d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &-1289800268556582927
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8464426788760639398}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

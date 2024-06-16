@@ -1,14 +1,14 @@
 ﻿using System;
 
-public class HardСoalCounter : ResourceCounter
+public class GoldStorage : ResourceStorage
 {
     public override bool IsResourceTypeSuitable(Type typeResource)
     {
-        return typeResource == typeof(HardСoal);
+        return typeResource == typeof(Gold);
     }
 
     protected override bool IsResourceSuitable(IResource resource)
     {
-        return resource is HardСoal;
+        return resource is Gold;
     }
 }
