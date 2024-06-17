@@ -1,15 +1,15 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMover), typeof(ChoicerByMouse))]
+[RequireComponent(typeof(PlayerMover), typeof(MouseController))]
 public class Player : MonoBehaviour
 {
     private PlayerMover _playerMover;
-    private ChoicerByMouse _choicerByMouse;
+    private MouseController _choicerByMouse;
 
     private void Awake()
     {
         _playerMover = GetComponent<PlayerMover>();
-        _choicerByMouse = GetComponent<ChoicerByMouse>();
+        _choicerByMouse = GetComponent<MouseController>();
     }
 
     private void Update()

@@ -20,34 +20,31 @@ public class BuildingSpawner : MonoBehaviour
     {
         ConstructionFlag flag = Instantiate(_prefabFlag);
         flag.transform.position = _previewer.transform.position;
-        flag.SetPrefabBuilding(_prefabBuildin);
-        flag.SetColorFlag(colorBuilding);
-
-        flag.ReadyBuild += OnSpawnBuilding;
+        flag.SetColor(colorBuilding);
 
         RemoveViewBuilding();
 
+        Building building = Instantiate(_prefabBuildin);
+        building.transform.position = flag.transform.position;
+        building.SetColor(colorBuilding);
+        building.gameObject.SetActive(false);
+
+        flag.SetBuilding(building);
+
         return flag;
+    }
+
+    public Vector3 GetNewPositionViewBuilding()
+    {
+        Vector3 position = _previewer.transform.position;
+
+        RemoveViewBuilding();
+
+        return position;
     }
 
     public void RemoveViewBuilding()
     {
         Destroy(_previewer.gameObject);
-    }
-
-    private void OnSpawnBuilding(ConstructionFlag flag)
-    {
-        Building building = Instantiate(flag.PrefabBuilding);
-        building.transform.position = flag.transform.position;
-        building.SetColor(flag.GetColorFlag());
-
-        Worker worker = flag.BuilderWorker;
-
-        if (building is Base newBase)
-            newBase.AddUnit(worker);
-
-        flag.ReadyBuild -= OnSpawnBuilding;
-
-        flag.Remove();
     }
 }

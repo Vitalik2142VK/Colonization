@@ -6,10 +6,17 @@ using UnityEngine;
 public class BaseResourceManager : MonoBehaviour
 {
     [SerializeField] private ResourceStorage[] _resourceStorage;
+    [SerializeField] private int _countGiveResources = 0; // for tests
+    [SerializeField] private bool _isGiveResources = false; // for tests
 
     private List<ResourcePlace> _foundResources;
 
     public event Action<Resource> ResourceDelivered;
+
+    private void Update()
+    {
+        SetResources();
+    }
 
     public List<ResourcePlace> GetNearestResources(List<ResourcePlace> foundResources)
     {
@@ -110,5 +117,18 @@ public class BaseResourceManager : MonoBehaviour
         return _resourceStorage
             .Where(rs => rs.IsResourceTypeSuitable(Type.GetType(resources.Key)))
             .First();
+    }
+
+    private void SetResources() // for tests
+    {
+        if (_isGiveResources == false)
+            return;
+
+        foreach (var resource in _resourceStorage)
+        {
+            resource.AddCountResources(_countGiveResources);
+        }
+
+        _isGiveResources = false;
     }
 }

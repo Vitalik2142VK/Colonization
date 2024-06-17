@@ -1,64 +1,31 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Renderer))]
-public class ConstructionFlag : MonoBehaviour
+public class ConstructionFlag : MonoBehaviour, IInteractive
 {
-    [SerializeField] private WaitingUnitArea _waitingUnitArea;
-
-    private Building _prefabBuilding;
-    private Worker _builderWorker;
+    private Building _building;
     private Renderer _renderer;
 
-    public event Action<ConstructionFlag> ReadyBuild;
-
-    public Building PrefabBuilding => _prefabBuilding;
-    public Worker BuilderWorker => _builderWorker;
+    public Building Building => _building;
 
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
     }
 
-    private void OnEnable()
+    public void SetBuilding(Building building)
     {
-        _waitingUnitArea.UnitEntered += OnGetReadyBuild;
+        if (_building == null)
+            _building = building;
     }
 
-    private void OnDisable()
+    public void ChangePosition(Vector3 position)
     {
-        _waitingUnitArea.UnitEntered -= OnGetReadyBuild;
+        transform.position = position;
+        _building.transform.position = position;
     }
 
-    public void SetPrefabBuilding(Building prefabBuilding)
-    {
-        if (_prefabBuilding == null)
-            _prefabBuilding = prefabBuilding;
-    }
-
-    public void ExpectBuilderCollector(Worker builderCollector)
-    {
-        _builderWorker = builderCollector;
-        _waitingUnitArea.SetExpectedUnit(_builderWorker);
-    }
-
-    public Color GetColorFlag()
-    {
-        Color color = _renderer.material.color;
-
-        if (transform.childCount > 0)
-        {
-            foreach (Transform child in transform)
-            {
-                if (child.TryGetComponent(out Renderer rendererChild))
-                    color = rendererChild.material.color;
-            }
-        }
-
-        return color;
-    }
-
-    public void SetColorFlag(Color color)
+    public void SetColor(Color color)
     {
         if (transform.childCount > 0)
         {
@@ -79,12 +46,5 @@ public class ConstructionFlag : MonoBehaviour
     public void Remove()
     {
         Destroy(gameObject);
-    }
-
-    private void OnGetReadyBuild()
-    {
-        ReadyBuild?.Invoke(this);
-
-        _builderWorker.PutResource();
     }
 }

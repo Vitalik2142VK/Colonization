@@ -9,6 +9,7 @@ public class Worker : Unit
     private MoverWorker _moverWorker;
     private VisionWorker _visualWorker;
     private ResourcePlace _resourcePlace;
+    private ConstructionFlag _flag;
     private bool _isMining = false;
 
     private void Awake()
@@ -59,9 +60,30 @@ public class Worker : Unit
             StartCoroutine(WaitMineResource());
     }
 
+    public void SetConstructionFlag(ConstructionFlag flag)
+    {
+        _flag = flag;
+    }
+
     public void TakeResourcesBase()
     {
         _moverWorker.TakeResourcesBase();
+    }
+
+    public void BuildBuilding(ConstructionFlag flag)
+    {
+        if (flag != _flag)
+            return;
+
+        PutResource();
+
+        Building building = _flag.Building;
+        building.gameObject.SetActive(true);
+
+        if (building is Base newBase)
+            newBase.AddUnit(this);
+
+        _flag.Remove();
     }
 
     private void OnFindResource(Resource resource)

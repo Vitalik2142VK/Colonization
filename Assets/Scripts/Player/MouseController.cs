@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ChoicerByMouse : MonoBehaviour
+public class MouseController : MonoBehaviour
 {
     private const string Ground = nameof(Ground);
 
+    [SerializeField] private LevelBorders _levelBorders;
     [SerializeField] private BuildingSpawner _buildingSpawner;
 
     private Camera _camera;
@@ -38,7 +39,7 @@ public class ChoicerByMouse : MonoBehaviour
                 if (hit.collider.gameObject.layer == LayerMask.NameToLayer(Ground))
                 {
                     PreviewerBuilding viewBuilding = _buildingSpawner.GetViewBuilding();
-                    viewBuilding.transform.position = hit.point;
+                    viewBuilding.transform.position = _levelBorders.GetCheckedPosition(hit.point);
                 }
             }
         }
@@ -58,9 +59,17 @@ public class ChoicerByMouse : MonoBehaviour
 
         if (viewBuilding.IsItPossibleBuild)
         {
-            ConstructionFlag flag = _buildingSpawner.EstablishBuildingFlag(RandomerColor.GetRandomColor());
-            _selectedBase.FixPositionNewBase(flag);
-
+            if (_selectedBase.CurrentState == Base.State.BuildNewBase)
+            {
+                Vector3 position = _buildingSpawner.GetNewPositionViewBuilding();
+                _selectedBase.ChangePositionNewBase(position);
+            }
+            else
+            {
+                ConstructionFlag flag = _buildingSpawner.EstablishBuildingFlag(RandomerColor.GetRandomColor());
+                _selectedBase.FixPositionNewBase(flag);
+            }
+            
             UnSelect();
         }
     }
@@ -72,13 +81,8 @@ public class ChoicerByMouse : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            if (hit.collider.TryGetComponent(out Base building))
-            {
-                if (building.CurrentState == Base.State.Default)
-                    _selectedBase = building;
-
-                return;
-            }
+            if (hit.collider.TryGetComponent(out Base selectedBase))
+                _selectedBase = selectedBase;
         }
     }
 
