@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class VisionUnit : MonoBehaviour
+public abstract class VisionUnit : MonoBehaviour, IVisionUnit
 {
     [SerializeField] private float _viewingRadius;
 

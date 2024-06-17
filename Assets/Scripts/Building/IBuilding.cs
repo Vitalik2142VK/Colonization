@@ -5,5 +5,5 @@ public interface IBuilding : IInteractive
 {
     public Dictionary<string, int> GetRequiredResources();
 
-    public void SetColor(Color flagColor);
+    public void SetColor(Color color);
 }

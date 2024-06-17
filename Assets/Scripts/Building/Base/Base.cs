@@ -58,6 +58,12 @@ public partial class Base : Building
         _flag = flag;
     }
 
+    public void ChangePositionNewBase(Vector3 position)
+    {
+        if (_flag != null)
+            _flag.ChangePosition(position);
+    }
+
     private void OnSendCollectors(List<ResourcePlace> foundResources)
     {
         if (foundResources.Count == 0)
@@ -98,11 +104,9 @@ public partial class Base : Building
             if (_resourceManager.AreEnoughResources(requiredResources) == false)
                 return;
 
-            if (_unitsController.TrySentToNewBase(out Worker collector, _flag.transform))
+            if (_unitsController.TrySentToNewBase(_flag))
             {
                 _resourceManager.GiveResources(requiredResources);
-
-                _flag.ExpectBuilderCollector(collector);
 
                 CurrentState = State.Default;
             }

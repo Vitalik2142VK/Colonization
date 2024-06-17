@@ -45,6 +45,18 @@ public abstract class ResourceStorage : MonoBehaviour
         }
     }
 
+    public void AddCountResources(int count) // fot tests
+    {
+        int result = _countResources + count;
+
+        if (result <= _maxCount)
+            _countResources = result;
+        else
+            _countResources = _maxCount;
+
+        UpdateView();
+    }
+
     private void UpdateView()
     {
         _counter.UpdateView(_countResources, _maxCount);

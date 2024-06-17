@@ -10,10 +10,7 @@ public class SpawnerResoircesPlaces : MonoBehaviour
     [SerializeField] private Transform _container;
     [SerializeField] private ResourcePlace[] _prefabs;
     [SerializeField] private ResourcesPool[] _pools;
-    [SerializeField] private float _maxValueByX;
-    [SerializeField] private float _minValueByX;
-    [SerializeField] private float _maxValueByZ;
-    [SerializeField] private float _minValueByZ;
+    [SerializeField] private LevelBorders _levelBorders;
     [SerializeField, Range(MinCountResources, MaxCountResources)] private int _countRecources;
     [SerializeField] private bool _isRandomCount = false;
 
@@ -70,8 +67,8 @@ public class SpawnerResoircesPlaces : MonoBehaviour
 
     private bool TryGetPointSpawn(out Vector3 spawnPosition)
     {
-        float valueX = Random.Range(_minValueByX, _maxValueByX);
-        float valueZ = Random.Range(_minValueByZ, _maxValueByZ);
+        float valueX = Random.Range(_levelBorders.MinValueByX, _levelBorders.MaxValueByX);
+        float valueZ = Random.Range(_levelBorders.MinValueByZ, _levelBorders.MaxValueByZ);
 
         Ray ray = new Ray(new Vector3(valueX, MeasuringHeight, valueZ), Vector3.down);
 

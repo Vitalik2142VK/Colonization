@@ -45,14 +45,16 @@ public class BaseUnitsController : MonoBehaviour
         collector.PutResource();
     }
 
-    public bool TrySentToNewBase(out Worker collector, Transform pointNewBase)
+    public bool TrySentToNewBase(ConstructionFlag flag)
     {
-        _listUnits.TryGiveFreeWorker(out collector);
+        _listUnits.TryGiveFreeWorker(out Worker worker);
 
-        if (collector == null)
+        if (worker == null)
             return false;
 
-        collector.SetWaypoints(SpecifyWaypoint(pointNewBase));
+        worker.SetConstructionFlag(flag);
+        worker.SetWaypoints(SpecifyWaypoint(flag.transform));
+        worker.TakeResourcesBase();
 
         return true;
     }
