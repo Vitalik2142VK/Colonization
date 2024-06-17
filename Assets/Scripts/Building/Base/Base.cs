@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ResourceScaner), typeof(BaseResourceManager), typeof(BaseUnitsController))]
-[RequireComponent(typeof(CreatorUnit), typeof(BuilderBuilding))]
+[RequireComponent(typeof(CreatorUnit))]
 public partial class Base : Building
 {
     [SerializeField] private ResourceCollectionArea _resourceCollectionArea;
@@ -13,7 +13,7 @@ public partial class Base : Building
     private BaseResourceManager _resourceManager;
     private BaseUnitsController _unitsController;
     private CreatorUnit _creatorUnit;
-    private BuilderBuilding _builderBuilding;
+    private ConstructionFlag _flag;
     private WaitForSeconds _wait;
 
     public State CurrentState { get; private set; }
@@ -24,7 +24,6 @@ public partial class Base : Building
         _resourceManager = GetComponent<BaseResourceManager>();
         _unitsController = GetComponent<BaseUnitsController>();
         _creatorUnit = GetComponent<CreatorUnit>();
-        _builderBuilding = GetComponent<BuilderBuilding>();
 
         CurrentState = State.Default;
     }
@@ -48,25 +47,15 @@ public partial class Base : Building
         _resourceCollectionArea.ResourceDelivered -= OnResourceDelivered;
     }
 
-    public PreviewerBuilding GetViewBuilding()
-    {
-        return _builderBuilding.GetViewBuilding();
-    }
-
-    public void RemoveViewBuilding()
-    {
-        _builderBuilding.RemoveViewBuilding();
-    }
-
     public void AddUnit(Unit unit)
     {
         _unitsController.AddUnit(unit);
     }
 
-    public void FixPositionNewBase()
+    public void FixPositionNewBase(ConstructionFlag flag)
     {
         CurrentState = State.BuildNewBase;
-        _builderBuilding.EstablishBuildingFlag(ColorManager.GetRandomColor());
+        _flag = flag;
     }
 
     private void OnSendCollectors(List<ResourcePlace> foundResources)
@@ -75,22 +64,22 @@ public partial class Base : Building
             return;
 
         List<ResourcePlace> resourcesPlasces = _resourceManager.GetNearestResources(foundResources);
-        _unitsController.SendCollectors(resourcesPlasces);
+        _unitsController.SendWorkers(resourcesPlasces);
     }
 
-    private void OnResourceDelivered(Collector collector, Resource resource)
+    private void OnResourceDelivered(Worker collector, Resource resource)
     {
         _resourceManager.ResourceIsDelivered(resource);
 
         if (_resourceManager.TryGetNearestNeededResource(out ResourcePlace resourcePlace))
         {
-            _unitsController.SendCollectorByResource(collector, resourcePlace);
+            _unitsController.SendCollectorByWorker(collector, resourcePlace);
         }
     }
 
     private void CreateUnit()
     {
-        Unit prefab = _creatorUnit.GetUnitTypePrefab(typeof(Collector));
+        Unit prefab = _creatorUnit.GetUnitTypePrefab(typeof(Worker));
         Dictionary<string, int> requiredResources = prefab.GetRequiredResources();
 
         if (_resourceManager.AreEnoughResources(requiredResources))
@@ -102,18 +91,18 @@ public partial class Base : Building
 
     private void SendCollcetorToNewBase()
     {
-        if (_builderBuilding.TryGetCurrentFlag(out ConstructionFlag flag))
+        if (_flag != null && _flag.enabled)
         {
             Dictionary<string, int> requiredResources = GetRequiredResources();
 
             if (_resourceManager.AreEnoughResources(requiredResources) == false)
                 return;
 
-            if (_unitsController.TrySentToNewBase(out Collector collector, flag.transform))
+            if (_unitsController.TrySentToNewBase(out Worker collector, _flag.transform))
             {
                 _resourceManager.GiveResources(requiredResources);
 
-                flag.ExpectBuilderCollector(collector);
+                _flag.ExpectBuilderCollector(collector);
 
                 CurrentState = State.Default;
             }

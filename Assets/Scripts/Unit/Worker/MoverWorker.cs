@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class MoverCollector : MoverUnit
+public class MoverWorker : MoverUnit
 {
     private Resource _foundResource;
     private Rigidbody _foundResourceRigidbody;

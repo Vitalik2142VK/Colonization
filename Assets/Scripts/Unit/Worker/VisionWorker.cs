@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class VisionCollector : VisionUnit
+public class VisionWorker : VisionUnit
 {
     [SerializeField, Min(1.0f)] private float _timeWait;
 

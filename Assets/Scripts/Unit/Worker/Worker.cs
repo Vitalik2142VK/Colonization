@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Collector : Unit
+public class Worker : Unit
 {
     [SerializeField, Min(0.5f)] private float _miningTime;
 
-    private MoverCollector _moverCollector;
-    private VisionCollector _visualCollector;
+    private MoverWorker _moverWorker;
+    private VisionWorker _visualWorker;
     private ResourcePlace _resourcePlace;
     private bool _isMining = false;
 
@@ -15,19 +15,19 @@ public class Collector : Unit
     {
         GetComponents();
 
-        _moverCollector = MoverUnit as MoverCollector;
-        _visualCollector = VisionUnit as VisionCollector;
+        _moverWorker = MoverUnit as MoverWorker;
+        _visualWorker = VisionUnit as VisionWorker;
     }
 
     private void OnEnable()
     {
-        _visualCollector.ResourceFound += OnFindResource;
-        _moverCollector.CanTakeResource += OnTakeResource;
+        _visualWorker.ResourceFound += OnFindResource;
+        _moverWorker.CanTakeResource += OnTakeResource;
     }
 
     private void Update()
     {
-        if (IsBusy && _moverCollector.IsResourceFound == false)
+        if (IsBusy && _moverWorker.IsResourceFound == false)
             VisionUnit.Look();
 
         if (MoverUnit.IsThereWaypoint && _isMining == false)
@@ -36,8 +36,8 @@ public class Collector : Unit
 
     private void OnDisable()
     {
-        _visualCollector.ResourceFound -= OnFindResource;
-        _moverCollector.CanTakeResource -= OnTakeResource;
+        _visualWorker.ResourceFound -= OnFindResource;
+        _moverWorker.CanTakeResource -= OnTakeResource;
     }
 
     public void SetResourcePlace(ResourcePlace resourcePlace)
@@ -47,7 +47,7 @@ public class Collector : Unit
 
     public void PutResource()
     {
-        _moverCollector.PutResource();
+        _moverWorker.PutResource();
     }
 
     public void MineResource(ResourcePlace resourcePlace)
@@ -55,18 +55,18 @@ public class Collector : Unit
         if (_resourcePlace == null || resourcePlace != _resourcePlace)
             return;
 
-        if (_moverCollector.IsResourceFound == false)
+        if (_moverWorker.IsResourceFound == false)
             StartCoroutine(WaitMineResource());
     }
 
     public void TakeResourcesBase()
     {
-        _moverCollector.TakeResourcesBase();
+        _moverWorker.TakeResourcesBase();
     }
 
     private void OnFindResource(Resource resource)
     {
-        _moverCollector.SetFoundResource(resource);
+        _moverWorker.SetFoundResource(resource);
     }
 
     private void OnTakeResource(Resource resource)

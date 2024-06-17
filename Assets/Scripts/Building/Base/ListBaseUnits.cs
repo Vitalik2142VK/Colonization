@@ -23,24 +23,24 @@ public class ListBaseUnits : MonoBehaviour
         ChangeColorUnit(unit);
     }
 
-    public Queue<Collector> GetFreeCollectors()
+    public Queue<Worker> GetFreeWorkers()
     {
-        Queue<Collector> collectors = new Queue<Collector>();
+        Queue<Worker> collectors = new Queue<Worker>();
 
         foreach (var unit in _units)
         {
-            if (unit is Collector collector && unit.IsBusy == false)
+            if (unit is Worker collector && unit.IsBusy == false)
                 collectors.Enqueue(collector);
         }
 
         return collectors;
     }
 
-    public bool TryGiveFreeCollector(out Collector collector)
+    public bool TryGiveFreeWorker(out Worker collector)
     {
         collector = _units
-            .Where(u => u is Collector && u.IsBusy == false)
-            .Select(u => (Collector)u)
+            .Where(u => u is Worker && u.IsBusy == false)
+            .Select(u => (Worker)u)
             .FirstOrDefault();
 
         if (collector == null)

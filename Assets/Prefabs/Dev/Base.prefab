@@ -1262,9 +1262,6 @@ PrefabInstance:
       addedObject: {fileID: 2058035233119415922}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2ffc08730a9ecbd4699993d5c6e6760a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2327632491428690640}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2ffc08730a9ecbd4699993d5c6e6760a, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3622186540767173457}
     - targetCorrespondingSourceObject: {fileID: -516098083770646512, guid: 2ffc08730a9ecbd4699993d5c6e6760a, type: 3}
       insertIndex: -1
@@ -1408,21 +1405,6 @@ MonoBehaviour:
   _prefabs:
   - {fileID: 6781233889712340920, guid: 863b23e7e3462694097974882a06aff9, type: 3}
   _spawnHeight: 3
---- !u!114 &2327632491428690640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7083873892964637877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8140899c7c09728448b53d0135cf2f7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _prefabBuildin: {fileID: 5018655019330373611}
-  _previewerPrefab: {fileID: -364256373140923254, guid: 4b88ecee2d2981e4c8274eac8c84bbd0, type: 3}
-  _prefabFlag: {fileID: 1645407143401101789, guid: 81892d5a72d6ae645bc27cdd803c17e5, type: 3}
 --- !u!54 &3622186540767173457
 Rigidbody:
   m_ObjectHideFlags: 0

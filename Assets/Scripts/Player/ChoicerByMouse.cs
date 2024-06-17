@@ -5,6 +5,8 @@ public class ChoicerByMouse : MonoBehaviour
 {
     private const string Ground = nameof(Ground);
 
+    [SerializeField] private BuildingSpawner _buildingSpawner;
+
     private Camera _camera;
     private Base _selectedBase;
 
@@ -35,7 +37,7 @@ public class ChoicerByMouse : MonoBehaviour
             {
                 if (hit.collider.gameObject.layer == LayerMask.NameToLayer(Ground))
                 {
-                    PreviewerBuilding viewBuilding = _selectedBase.GetViewBuilding();
+                    PreviewerBuilding viewBuilding = _buildingSpawner.GetViewBuilding();
                     viewBuilding.transform.position = hit.point;
                 }
             }
@@ -52,12 +54,14 @@ public class ChoicerByMouse : MonoBehaviour
 
     private void SelectPlaceNewBuilding()
     {
-        PreviewerBuilding viewBuilding = _selectedBase.GetViewBuilding();
+        PreviewerBuilding viewBuilding = _buildingSpawner.GetViewBuilding();
 
         if (viewBuilding.IsItPossibleBuild)
         {
-            _selectedBase.FixPositionNewBase();
-            _selectedBase = null;
+            ConstructionFlag flag = _buildingSpawner.EstablishBuildingFlag(RandomerColor.GetRandomColor());
+            _selectedBase.FixPositionNewBase(flag);
+
+            UnSelect();
         }
     }
 
@@ -90,7 +94,7 @@ public class ChoicerByMouse : MonoBehaviour
     {
         if (IsThereSelectedBuilding)
         {
-            _selectedBase.RemoveViewBuilding();
+            _buildingSpawner.RemoveViewBuilding();
             _selectedBase = null;
         }    
     }

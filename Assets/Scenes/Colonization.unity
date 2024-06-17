@@ -1407,6 +1407,53 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &903792024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 903792026}
+  - component: {fileID: 903792025}
+  m_Layer: 0
+  m_Name: BuildingSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &903792025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903792024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8140899c7c09728448b53d0135cf2f7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefabBuildin: {fileID: 5018655019330373611, guid: 81617fe310e3aa0498ebfb3545bcb02e, type: 3}
+  _previewerPrefab: {fileID: -364256373140923254, guid: 4b88ecee2d2981e4c8274eac8c84bbd0, type: 3}
+  _prefabFlag: {fileID: 1645407143401101789, guid: 81892d5a72d6ae645bc27cdd803c17e5, type: 3}
+--- !u!4 &903792026
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903792024}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 13.122913, y: -75.77279, z: 68.94891}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &953221831
 GameObject:
   m_ObjectHideFlags: 0
@@ -2623,6 +2670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4380f1421831fcf49bc59efdcd211973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buildingSpawner: {fileID: 903792025}
 --- !u!1 &1978520198
 GameObject:
   m_ObjectHideFlags: 0
@@ -3592,11 +3640,12 @@ SceneRoots:
   - {fileID: 859467232}
   - {fileID: 968584660}
   - {fileID: 1921882139}
+  - {fileID: 903792026}
   - {fileID: 5602689152493169915}
   - {fileID: 2075750671}
   - {fileID: 732536817}
   - {fileID: 481594285}
+  - {fileID: 512782033}
   - {fileID: 1589275183}
   - {fileID: 149052984}
-  - {fileID: 512782033}
   - {fileID: 1212362540}

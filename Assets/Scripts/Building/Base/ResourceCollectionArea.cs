@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ResourceCollectionArea : MonoBehaviour
 {
-    public event Action<Collector, Resource> ResourceDelivered;
+    public event Action<Worker, Resource> ResourceDelivered;
 
     private void OnTriggerStay(Collider other)
     {
@@ -12,7 +12,7 @@ public class ResourceCollectionArea : MonoBehaviour
 
     private void GetResource(Collider other)
     {
-        if (other.gameObject.TryGetComponent(out Collector collector))
+        if (other.gameObject.TryGetComponent(out Worker collector))
         {
             int countChilds = collector.transform.childCount;
 

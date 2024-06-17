@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class ColorManager
+public static class RandomerColor
 {
     private static float MaxValueColor = 1.0f;
     private static float MinValueColor = 0.0f;

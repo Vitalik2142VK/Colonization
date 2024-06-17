@@ -17,15 +17,15 @@ public class BaseUnitsController : MonoBehaviour
         unit.StopMove();
     }
 
-    public void SendCollectors(List<ResourcePlace> resourcesPlasces)
+    public void SendWorkers(List<ResourcePlace> resourcesPlasces)
     {
-        Queue<Collector> collectors = _listUnits.GetFreeCollectors();
+        Queue<Worker> collectors = _listUnits.GetFreeWorkers();
 
         int currentIndexResource = 0;
 
         while (collectors.Count > 0 && resourcesPlasces.Count > 0)
         {
-            Collector collector = collectors.Dequeue();
+            Worker collector = collectors.Dequeue();
             ResourcePlace resourcePlace = resourcesPlasces[currentIndexResource];
             Transform directionPoint = resourcePlace.transform;
             Queue<Waypoint> waypoints = SpecifyWaypointAndBase(directionPoint);
@@ -37,7 +37,7 @@ public class BaseUnitsController : MonoBehaviour
         }
     }
 
-    public void SendCollectorByResource(Collector collector, ResourcePlace resourcePlace)
+    public void SendCollectorByWorker(Worker collector, ResourcePlace resourcePlace)
     {
         Queue<Waypoint> waypoints = SpecifyWaypointAndBase(resourcePlace.transform);
         collector.SetResourcePlace(resourcePlace);
@@ -45,9 +45,9 @@ public class BaseUnitsController : MonoBehaviour
         collector.PutResource();
     }
 
-    public bool TrySentToNewBase(out Collector collector, Transform pointNewBase)
+    public bool TrySentToNewBase(out Worker collector, Transform pointNewBase)
     {
-        _listUnits.TryGiveFreeCollector(out collector);
+        _listUnits.TryGiveFreeWorker(out collector);
 
         if (collector == null)
             return false;
